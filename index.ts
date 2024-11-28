@@ -199,9 +199,8 @@ db.test.find({ skills: { $size: 0 } });
 // ? ==============================
 db.test.find({ interests: ["Travelling", "Reading", "Cooking"] });
 
-
 // ? ==============================
-// *$elemMatch operator 
+// *$elemMatch operator
 
 db.test
   .find({
@@ -213,20 +212,18 @@ db.test
 
 // ? ==============================
 
-// * $all operator 
+// * $all operator
 
- db.test
-   .find({
-     interests: { $all: ["Travelling", "Gaming", "Reading"] },
-   })
-   .project({ interests: 1 });
-
+db.test
+  .find({
+    interests: { $all: ["Travelling", "Gaming", "Reading"] },
+  })
+  .project({ interests: 1 });
 
 // ? ==============================
 
-
-// * Mongodb Update Query 
-// * $set operator => it can change non-primitive to primitive 
+// * Mongodb Update Query
+// * $set operator => it can change non-primitive to primitive
 
 db.test.updateOne(
   // kake update korbo
@@ -242,10 +239,9 @@ db.test.updateOne(
   }
 );
 
-
 // ? ==============================
 
-// * $addToSet operator 
+// * $addToSet operator
 
 db.test.updateOne(
   // kake update korbo
@@ -261,10 +257,8 @@ db.test.updateOne(
   }
 );
 
-
-
 // ? ==============================
-// * $each Operator 
+// * $each Operator
 
 db.test.updateOne(
   // kake update korbo
@@ -280,9 +274,8 @@ db.test.updateOne(
   }
 );
 
-
 // ? ==============================
-// * $push operator 
+// * $push operator
 
 db.test.updateOne(
   // kake update korbo
@@ -297,3 +290,130 @@ db.test.updateOne(
     },
   }
 );
+
+// ? ==============================
+
+// * $unset operator => remove a field 
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+  {
+    $unset: { birthday: "" },
+  }
+);
+
+
+// ? ==============================
+
+// * $pop operator => remove the first or last element of an array
+
+// ? Syntax => {field: {$pop: 1 or -1}}  => 1 for last element, -1 for first element 
+
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+  {
+    $pop: { friends: 1 },
+  }
+);
+
+
+// ? ==============================
+
+// * $pull operator => remove a specific value from an array 
+
+// ? Syntax => {field: {$pull: value}} 
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+  {
+    $pull: { friends: "Mir Hussain" },
+  }
+);
+// ========================== 
+
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+  {
+    $pull: { languages: "Catalan" },
+  }
+);
+
+// ? ==============================
+
+// * $pullAll operator => remove multiple values from an array 
+
+// ? Syntax => {field: {$pullAll: [value1, value2, .... , valueN]}} 
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+  { $pullAll: { languages: ["German", "Thai"] } }
+);
+
+
+// ? ==============================
+
+// * More about $set operator => it can change non-primitive to primitive 
+
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+
+  {
+    $set: {
+      "address.city": "dhaka",
+      "address.postalCode": "0000",
+      "address.country": "bangladesh",
+    },
+  }
+);
+
+
+// ? ==============================
+
+//  *  $ positional operator => it can update a specific element of an array 
+
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065"), "education.major": "Art" },
+
+  {
+    $set: {
+      "education.$.major": "CSE",
+    },
+  }
+);
+
+// ? ==============================
+
+// * $inc operator => increment a field value by a specific amount
+
+db.test.updateOne(
+  { _id: ObjectId("6406ad63fc13ae5a40000065") },
+
+  {
+    $inc: {
+      age: 1,
+    },
+  }
+);
+
+// ? ==============================
+
+// * deleteOne method => delete a single document 
+
+db.test.deleteOne({ _id: ObjectId("6406ad63fc13ae5a40000065") }); 
+
+// ? ==============================
+
+// * create a collection => createCollection method 
+db.createCollection("posts"); 
+
+// ? ==============================
+
+// * drop a collection => drop method
+
+db.posts.drop();
+
+
